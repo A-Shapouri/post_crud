@@ -28,10 +28,11 @@ Route::post('/auth/login', [UserController::class, 'loginUser'])->name('auth.log
 
 
 Route::prefix('posts')
+    ->middleware(['with_api_key'])
     ->group(function () {
         Route::get('/', [PostController::class, 'index'])->name('post.index');
         Route::get('/{post}', [PostController::class, 'show'])->name('post.show');
-        Route::post('/', [PostController::class, 'store'])->name('post.store');
-        Route::put('/{post}', [PostController::class, 'update'])->name('post.update');
-        Route::delete('/{post}', [PostController::class, 'destroy'])->name('post.destroy');
+        Route::post('/', [PostController::class, 'store'])->middleware(['auth:sanctum'])->name('post.store');
+        Route::put('/{post}', [PostController::class, 'update'])->middleware(['auth:sanctum'])->name('post.update');
+        Route::delete('/{post}', [PostController::class, 'destroy'])->middleware(['auth:sanctum'])->name('post.destroy');
     });

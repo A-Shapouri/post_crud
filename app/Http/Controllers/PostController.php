@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        return PostResource::collection(Post::paginate($request->limit));
+        return PostResource::collection(Post::paginate($request->input('limit', 15)));
     }
 
     /**
@@ -63,11 +63,11 @@ class PostController extends Controller
     public function update(Request $request, Post $post): PostResource
     {
         $post->update([
-            'title' => $request->title | $post->title,
-            'content' => $request->content | $post->content,
-            'likes' => $request->likes | $post->likes,
-            'dislikes' => $request->dislikes | $post->dislikes,
-            'views' => $request->views | $post->views,
+            'title' => $request->title ?? $post->title,
+            'content' => $request->content ?? $post->content,
+            'likes' => $request->likes ?? $post->likes,
+            'dislikes' => $request->dislikes ?? $post->dislikes,
+            'views' => $request->views ?? $post->views,
         ]);
 
         return new PostResource($post);
